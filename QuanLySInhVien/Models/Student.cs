@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QuanLySInhVien.Models
+namespace QuanLySinhVien.Models
 {
     public class Student
     {
