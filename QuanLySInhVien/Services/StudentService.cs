@@ -8,7 +8,7 @@ using QuanLySinhVien.Validators;
 namespace QuanLySinhVien.Services;
 
 public class StudentService
-{   
+{
     //them sinh vien
     public bool AddStudent(Student student)
     {
@@ -37,7 +37,7 @@ public class StudentService
             return;
         }
         Console.WriteLine("Danh sach sinh vien:");
-        for(int i=0; i< StudentData.Students.Count; i++)
+        for (int i = 0; i < StudentData.Students.Count; i++)
         {
             var student = StudentData.Students[i];
             Console.WriteLine($"{i + 1}. Ma sinh vien: {student.MaSinhVien}, Ho ten: {student.HoTen}, Ngay sinh: {student.NgaySinh.ToShortDateString()}, Gioi tinh: {student.GioiTinh}, Email: {student.Email}, So dien thoai: {student.SoDienThoai}, Nganh hoc: {student.NganhHoc}, Diem trung binh: {student.DiemTrungBinh}, Trang thai hoc tap: {student.TrangThaiHocTap}");
@@ -106,5 +106,34 @@ public class StudentService
         student.TrangThaiHocTap = updatedStudent.TrangThaiHocTap;
         Console.WriteLine("Cap nhat sinh vien thanh cong.");
     }
-}
+    //sap xep sinh vien theo ho ten
+    public void SortStudentsByName()
+    {
+        var list = StudentData.Students.OrderBy(s => s.HoTen).ToList();
+        Console.WriteLine("Danh sach sinh vien sau khi sap xep theo ho ten:");
+        DisplayStudents();
+    }
+    //sap xep sinh vien theo diem trung binh
 
+    public void SortStudentsByGPA()
+    {
+        var list = StudentData.Students.OrderByDescending(s => s.DiemTrungBinh).ToList();
+        Console.WriteLine("Danh sach sinh vien sau khi sap xep theo diem trung binh:");
+        DisplayStudents();
+    }
+    //sinh vien co diem tu 8.0 tro len
+    public void DisplayStudentsWithGPAAbove8()
+    {
+        var list = StudentData.Students.Where(s => s.DiemTrungBinh >= 8.0).ToList();
+        Console.WriteLine("Danh sach sinh vien co diem trung binh tu 8.0 tro len:");
+        DisplayStudents();
+    }
+    //sinh vien co diem cao nhat
+    public void DisplayStudentsWithHighestGPA()
+    {
+        double maxDiem = StudentData.Students.Max(s => s.DiemTrungBinh);
+        var list = StudentData.Students.Where(s => s.DiemTrungBinh == maxDiem).ToList();
+        Console.WriteLine("Danh sach sinh vien co diem trung binh cao nhat:");
+        DisplayStudents();
+    }
+}
