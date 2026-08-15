@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using QuanLySinhVien.Data;
 using QuanLySinhVien.Models;
 using QuanLySinhVien.Validators;
@@ -111,29 +112,104 @@ public class StudentService
     {
         var list = StudentData.Students.OrderBy(s => s.HoTen).ToList();
         Console.WriteLine("Danh sach sinh vien sau khi sap xep theo ho ten:");
-        DisplayStudents();
+        foreach (var student in list)
+        {
+            Console.WriteLine(
+                $"Ma sinh vien: {student.MaSinhVien}, " +
+                $"Ho ten: {student.HoTen}, " +
+                $"Diem trung binh: {student.DiemTrungBinh}"
+            );
+        }
     }
     //sap xep sinh vien theo diem trung binh
 
     public void SortStudentsByGPA()
     {
         var list = StudentData.Students.OrderByDescending(s => s.DiemTrungBinh).ToList();
-        Console.WriteLine("Danh sach sinh vien sau khi sap xep theo diem trung binh:");
-        DisplayStudents();
+         Console.WriteLine("Danh sach sinh vien sau khi sap xep theo diem trung binh:");
+
+        foreach (var student in list)
+        {
+            Console.WriteLine(
+                $"Ma sinh vien: {student.MaSinhVien}, " +
+                $"Ho ten: {student.HoTen}, " +
+                $"Diem trung binh: {student.DiemTrungBinh}"
+            );
+        }
     }
     //sinh vien co diem tu 8.0 tro len
     public void DisplayStudentsWithGPAAbove8()
     {
         var list = StudentData.Students.Where(s => s.DiemTrungBinh >= 8.0).ToList();
+
         Console.WriteLine("Danh sach sinh vien co diem trung binh tu 8.0 tro len:");
-        DisplayStudents();
+
+        foreach (var student in list)
+        {
+            Console.WriteLine(
+                $"Ma sinh vien: {student.MaSinhVien}, " +
+                $"Ho ten: {student.HoTen}, " +
+                $"Diem trung binh: {student.DiemTrungBinh}"
+            );
+        }
     }
     //sinh vien co diem cao nhat
     public void DisplayStudentsWithHighestGPA()
     {
-        double maxDiem = StudentData.Students.Max(s => s.DiemTrungBinh);
-        var list = StudentData.Students.Where(s => s.DiemTrungBinh == maxDiem).ToList();
+        if (StudentData.Students.Count == 0)
+        {
+            Console.WriteLine("Danh sach sinh vien trong.");
+            return;
+        }
+
+        double maxDiem = StudentData.Students .Max(s => s.DiemTrungBinh);
+        var list = StudentData.Students .Where(s => s.DiemTrungBinh == maxDiem) .ToList();
+
         Console.WriteLine("Danh sach sinh vien co diem trung binh cao nhat:");
-        DisplayStudents();
+
+        foreach (var student in list)
+        {
+            Console.WriteLine(
+                $"Ma sinh vien: {student.MaSinhVien}, " +
+                $"Ho ten: {student.HoTen}, " +
+                $"Diem trung binh: {student.DiemTrungBinh}"
+            );
+        }
+    }
+    //tinh diem trung binh cua tat ca sinh vien
+    public void AverageGPA()
+    {
+        if (StudentData.Students.Count == 0)
+        {
+            Console.WriteLine("Danh sach sinh vien trong.");
+            return;
+        }
+
+        double averageGPA = StudentData.Students.Average(s => s.DiemTrungBinh);
+        Console.WriteLine($"Diem trung binh cua tat ca sinh vien: {averageGPA:F2}");
+    }
+    //thong ke sinh vien theo nganh hoc
+    public void CountStudentsByMajor()
+    {
+        var list = StudentData.Students.GroupBy(s => s.NganhHoc)
+            .Select(a => new { NganhHoc = a.Key, SoLuong = a.Count() })
+            .ToList();
+        Console.WriteLine("Thong ke sinh vien theo nganh hoc:");
+        foreach (var item in list)
+        {
+            Console.WriteLine($"Nganh hoc: {item.NganhHoc}, So luong sinh vien: {item.SoLuong}");
+        }
+    }
+    //thong ke sinh vien theo trang thai hoc tap
+    public void CountStudentsByStatus()
+    {
+        var list = StudentData.Students.GroupBy(s => s.TrangThaiHocTap)
+            .Select(a => new { TrangThaiHocTap = a.Key, SoLuong = a.Count() })
+            .ToList();
+        Console.WriteLine("Thong ke sinh vien theo trang thai hoc tap:");
+        foreach (var item in list)
+        {
+            Console.WriteLine($"Trang thai hoc tap: {item.TrangThaiHocTap}, So luong sinh vien: {item.SoLuong}");
+        }
     }
 }
