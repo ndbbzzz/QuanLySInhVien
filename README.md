@@ -1,4 +1,5 @@
 # QuanLySInhVien
+Nguyễn Đức Bảo Bình-241230664 CNTT2
 -Các chức năng đã hoàn thành
 1. Them sinh vien
 2. Hien thi danh sach sinh vien
